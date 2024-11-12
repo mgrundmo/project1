@@ -11,4 +11,6 @@ def index(request):
 
 def entry(request, title):
     list_entry = util.get_entry(title)
-    return HttpResponse(f"{list_entry}")
+    return render(request, "encyclopedia/entry.html", {
+        "title": title, "list_entry": list_entry
+    })
