@@ -17,12 +17,17 @@ textarea {
     width: 80%;
 }
 
+.button {
+    width: 25%;
+    font-size: 15px;
+}
+
 .main {
     padding: 10px;
 }
 
 .search {
-    width: 100%;
+    width: 75%;
     font-size: 15px;
     line-height: 15px;
 }
