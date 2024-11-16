@@ -18,9 +18,15 @@ def entry(request, title):
         return render(request, "encyclopedia/entry.html", {
             "title": title, "list_entry": title+"<h4>Entry not found</h4>"
         })
-def search(request, query):
+
+def search(request):
     # lookup list of entries
-    entries = list_entries()
+    entries = util.list_entries()
+    query = request.POST.get('q')
+
     # check if list of entries contains query
     if query in entries:
-            print(entrie) 
+        query = util.get_entry(query)
+        return render(request, "encyclopedia/entry.html", {
+            "title": query, "list_entry": markdown(query)
+        })  
