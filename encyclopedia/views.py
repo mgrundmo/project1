@@ -22,10 +22,12 @@ def entry(request, title):
 def search(request):
     # lookup list of entries
     entries = util.list_entries()
+    entries_lwr = [i.lower() for i in entries]
     query = request.POST.get('q')
+    query = query.lower()
 
-    # check if list of entries contains query
-    if query in entries:
+    # check if list of entries contains query non case sensitive
+    if query in entries_lwr:
         query = util.get_entry(query)
         return render(request, "encyclopedia/entry.html", {
             "title": query, "list_entry": markdown(query)
