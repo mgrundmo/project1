@@ -47,3 +47,6 @@ def search(request):
         return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries()
         })
+    
+def newpage(request):
+    return render(request, "encyclopedia/newpage.html")
