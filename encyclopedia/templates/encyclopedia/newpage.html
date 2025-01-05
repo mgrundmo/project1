@@ -6,12 +6,13 @@
 
 {% block body %}
 
-        <form>
-            <input type="text" placeholder="Title" style="width: 80%; margin-bottom: 10px;">
-            <textarea rows="5"></textarea>
-            <div>
-                <input type="submit" value="Save">
-            </div>
-        </form>
+    <form action="{% url 'newpage' %}" method="post">
+        {% csrf_token %}
+        <input type="text" placeholder="Title" name="title" style="width: 80%; margin-bottom: 10px;">
+        <textarea rows="5" name="text"></textarea>
+        <div>
+            <input type="submit" value="Save">
+        </div>
+    </form>
 
 {% endblock %}
