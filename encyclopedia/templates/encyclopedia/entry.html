@@ -9,6 +9,7 @@
     <div>
         {{ list_entry|safe }}
         {{ error }}
+        <a href="{% url 'edit' %}">Edit?</a>
     </div>
 
 {% endblock %}

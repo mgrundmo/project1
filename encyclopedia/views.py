@@ -81,3 +81,6 @@ def newpage(request):
             })   
     else:
         return render(request, "encyclopedia/newpage.html")
+    
+def edit(request):
+    return render(request, "encyclopedia/edit.html")
