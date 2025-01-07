@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    background-color: white;
+    background-color: rgb(246, 246, 246);
 }
 
 code {
@@ -10,11 +10,6 @@ code {
 h1 {
     margin-top: 0px;
     padding-top: 20px;
-}
-
-textarea {
-    height: 90vh;
-    width: 80%;
 }
 
 .button {

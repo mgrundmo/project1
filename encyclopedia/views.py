@@ -5,6 +5,7 @@ from markdown2 import markdown
 from . import util
 
 def index(request):
+    # display of all available entries
     return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries(), "header": "All Pages"
     })
@@ -58,12 +59,8 @@ def newpage(request):
         # check if title already exists , print error mesage if yes
         list_entries = util.list_entries()
         entries_lwr = [i.lower() for i in list_entries]
-        print(entries_lwr)
-        print(new_title)
         if new_title.casefold() in entries_lwr:
-            print("error")
             error_msg = new_title + " - this entry is already available"
-            print(error_msg)
             return render(request, "encyclopedia/entry.html", {
                 "error": error_msg
             })
@@ -83,4 +80,19 @@ def newpage(request):
         return render(request, "encyclopedia/newpage.html")
     
 def edit(request):
-    return render(request, "encyclopedia/edit.html")
+    title = request.POST.get('edit')
+    entry = util.get_entry(title)
+    print(title)
+    return render(request, "encyclopedia/edit.html",{
+        "title": title, "entry": entry
+    })
+
+def update(request):
+    title = request.POST.get('title')
+    entry = request.POST.get('text')
+    with open("entries/%s.md" % title, "w") as file_for_update:
+        file_for_update.write(entry)
+    list_entry = util.get_entry(title)
+    return render(request, "encyclopedia/entry.html", {
+        "title": title, "list_entry": markdown(list_entry)
+    })   

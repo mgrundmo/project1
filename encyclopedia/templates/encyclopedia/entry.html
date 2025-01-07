@@ -9,7 +9,13 @@
     <div>
         {{ list_entry|safe }}
         {{ error }}
-        <a href="{% url 'edit' %}">Edit?</a>
     </div>
+    <form action="{% url 'edit' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden"  name="edit" value="{{ title }}">
+        <div>
+            <input type="submit" value="Do you want to edit this entry?">
+        </div>
+    </form>
 
 {% endblock %}
