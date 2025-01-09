@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from markdown2 import markdown
+from random import randint
 
 from . import util
 
@@ -26,9 +27,8 @@ def search(request):
     entries = util.list_entries()
     entries_lwr = [i.lower() for i in entries]
 
-    # receive search query from form and make lowercase
+    # receive search query from form 
     query = request.POST.get('q')
-    # query = query.lower()
 
     # check if list of entries contains query non case sensitive
     if query.casefold() in entries_lwr:
@@ -80,14 +80,15 @@ def newpage(request):
         return render(request, "encyclopedia/newpage.html")
     
 def edit(request):
+    # get current entry to be edit and send to edit page
     title = request.POST.get('edit')
     entry = util.get_entry(title)
-    print(title)
     return render(request, "encyclopedia/edit.html",{
         "title": title, "entry": entry
     })
 
 def update(request):
+    # safe entry to file (overwrites excisting file)
     title = request.POST.get('title')
     entry = request.POST.get('text')
     with open("entries/%s.md" % title, "w") as file_for_update:
@@ -96,3 +97,17 @@ def update(request):
     return render(request, "encyclopedia/entry.html", {
         "title": title, "list_entry": markdown(list_entry)
     })   
+
+def random(request):
+    # request list of all titles in database
+    titles = util.list_entries()
+    # create random number by using length of list
+    rndm = randint(0, (len(titles)- 1))
+    # identify title using the random number
+    random_title = titles[rndm]
+    # get text entry asocoiated with the title 
+    random_entry = util.get_entry(random_title)
+    # display random entry
+    return render(request, "encyclopedia/entry.html", {
+        "title": random_title, "list_entry": markdown(random_entry)
+    })
