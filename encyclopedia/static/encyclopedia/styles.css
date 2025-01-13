@@ -12,6 +12,11 @@ h1 {
     padding-top: 20px;
 }
 
+.text {
+    width: 80%;
+    height: 100%;
+}
+
 .button {
     width: 26%;
     font-size: 15px;

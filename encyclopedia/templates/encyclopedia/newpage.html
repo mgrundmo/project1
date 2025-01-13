@@ -9,7 +9,7 @@
     <form action="{% url 'newpage' %}" method="post">
         {% csrf_token %}
         <input type="text" placeholder="Title" name="title" style="width: 80%; margin-bottom: 10px;">
-        <textarea rows="5" name="text" style="height: 100%;"></textarea>
+        <textarea rows="5" name="text" style="height: 100%; width: 80%"></textarea>
         <div>
             <input type="submit" value="Save">
         </div>
