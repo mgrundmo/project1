@@ -12,14 +12,22 @@ def index(request):
     })
 
 def entry(request, title):
+    # check if entry exists
     if util.get_entry(title):
+        # valid_entry is used to display or hide the edit button
+        valid_entry = True
         list_entry = util.get_entry(title)
         return render(request, "encyclopedia/entry.html", {
-            "title": title, "list_entry": markdown(list_entry)
+            "title": title, 
+            "list_entry": markdown(list_entry),
+            "valid_entry": valid_entry
         })        
     else:
+        valid_entry = False
         return render(request, "encyclopedia/entry.html", {
-            "title": title, "list_entry": title+"<h4>Entry not found</h4>"
+            "title": title,
+            "list_entry": title+"<h4>Entry not found</h4>",
+            "valid_entry": valid_entry
         })
 
 def search(request):
@@ -34,20 +42,23 @@ def search(request):
     if query.casefold() in entries_lwr:
         query = util.get_entry(query)
         return render(request, "encyclopedia/entry.html", {
-            "title": query, "list_entry": markdown(query)
+            "title": query, 
+            "list_entry": markdown(query)
         })  
 
-    # check if if list of entries contains substring of query
+    # check if list of entries contains substring of query
     elif query:
         result = [search for search in entries if query.casefold() in search.casefold()]  
         return render(request, "encyclopedia/index.html", {
-        "entries": result, "header": "Search Results"
+        "entries": result, 
+        "header": "Search Results"
         })
      
     # return to index page if query not found    
     else:
         return render(request, "encyclopedia/index.html", {
-        "entries": util.list_entries()
+        "entries": util.list_entries(),
+        "header": "All Pages"
         })
     
 def newpage(request):
@@ -80,7 +91,7 @@ def newpage(request):
         return render(request, "encyclopedia/newpage.html")
     
 def edit(request):
-    # get current entry to be edit and send to edit page
+    # get current entry to be edited and send to edit page
     title = request.POST.get('edit')
     entry = util.get_entry(title)
     return render(request, "encyclopedia/edit.html",{
@@ -109,5 +120,7 @@ def random(request):
     random_entry = util.get_entry(random_title)
     # display random entry
     return render(request, "encyclopedia/entry.html", {
-        "title": random_title, "list_entry": markdown(random_entry)
+        "title": random_title, 
+        "list_entry": markdown(random_entry),
+        "valid_entry": True
     })
