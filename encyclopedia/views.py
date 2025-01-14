@@ -64,29 +64,35 @@ def search(request):
 def newpage(request):
     if request.method == "POST":
         # get new title and entry
+        
         new_title = request.POST.get('title')
         new_entry = request.POST.get('text')
 
         # check if title already exists , print error mesage if yes
-        list_entries = util.list_entries()
-        entries_lwr = [i.lower() for i in list_entries]
-        if new_title.casefold() in entries_lwr:
-            error_msg = new_title + " - this entry is already available"
-            return render(request, "encyclopedia/entry.html", {
-                "error": error_msg
-            })
+        if new_title:
+            list_entries = util.list_entries()
+            entries_lwr = [i.lower() for i in list_entries]
+            if new_title.casefold() in entries_lwr:
+                error_msg = new_title + " - this entry is already available"
+                return render(request, "encyclopedia/entry.html", {
+                    "error": error_msg
+                })
 
+            else:
+                # create new file from title and entry
+                with open("entries/%s.md" % new_title, "w") as new_file:
+                    new_file.write("# %s\n\n" % new_title)
+                    new_file.write(new_entry + "\n")
+                list_entry = util.get_entry(new_title)
+
+                # display new entry
+                return render(request, "encyclopedia/entry.html", {
+                    "title": new_title, "list_entry": markdown(list_entry)
+                }) 
         else:
-            # create new file from title and entry
-            with open("entries/%s.md" % new_title, "w") as new_file:
-                new_file.write("# %s\n\n" % new_title)
-                new_file.write(new_entry + "\n")
-            list_entry = util.get_entry(new_title)
-
-            # display new entry
-            return render(request, "encyclopedia/entry.html", {
-                "title": new_title, "list_entry": markdown(list_entry)
-            })   
+            return render(request, "encyclopedia/index.html", {
+                "entries": util.list_entries(), "header": "All Pages"
+            })
     else:
         return render(request, "encyclopedia/newpage.html")
     
